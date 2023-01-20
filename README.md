@@ -6,10 +6,24 @@ source .env
 tanzu secret registry add regsecret --username ${DATA_E2E_REGISTRY_USERNAME} --password ${DATA_E2E_REGISTRY_PASSWORD} --server https://index.docker.io/v1/ --export-to-all-namespaces --yes  
 tanzu secret registry add tap-registry --username ${DATA_E2E_REGISTRY_USERNAME} --password ${DATA_E2E_REGISTRY_PASSWORD} --server https://index.docker.io/v1/ --export-to-all-namespaces --yes
 kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "registry-credentials"},{"name": "tap-registry"}],"secrets":[{"name": "tap-registry"}]}'
-kubectl apply -f config/rbac.yaml
 ```
 
-* Update the default ClusterStore to include Python and Procfile buildpacks:
+* Set up Argo:
+```
+kubectl create ns argo
+kubectl apply -f config/argo-workflow.yaml -nargo
+envsubst < config/argo-workflow-http-proxy.in.yaml > config/argo-workflow-http-proxy.yaml
+kubectl apply -f config/argo-workflow-http-proxy.yaml -nargo
+kubectl create rolebinding default-admin --clusterrole=admin --serviceaccount=argo:default -n argo
+kubectl apply -f config/argo-workflow-rbac.yaml -nargo
+```
+
+* Login to Argo - copy the token from here:
+```
+kubectl -n argo exec $(kubectl get pod -n argo -l 'app=argo-server' -o jsonpath='{.items[0].metadata.name}') -- argo auth token
+```
+
+* Include the necessary buildpack dependencies:
 ```
 export TBS_VERSION=1.9.0 # based on $(tanzu package available list buildservice.tanzu.vmware.com --namespace tap-install)
 imgpkg copy -b registry.tanzu.vmware.com/tanzu-application-platform/full-tbs-deps-package-repo:${TBS_VERSION} \
@@ -22,13 +36,7 @@ envsubst < ../tap/resources/tap-values-tbsfull.in.yaml > ../tap/resources/tap-va
 tanzu package installed update tap --values-file ../tap/resources/tap-values-tbsfull.yaml -n tap-install
 ```
 
-* Deploy Ingress:
-```
-source .env
-envsubst < config/workload-httpproxy.in.yaml > config/workload-httpproxy.yaml
-sed -i "s/YOUR_SESSION_NAMESPACE/default/g" config/workload-httpproxy.yaml
-kubectl apply -f config/workload-httpproxy.yaml
-```
+### Deploy the Analytics App
 
 * Deploy the app:
 ```
@@ -48,4 +56,17 @@ tanzu apps workload get image-processor #should yield image-processor.default.<y
 * To delete the app:
 ```
 tanzu apps workload delete image-processor --yes
+```
+
+### Deploy the Training Pipeline
+* Deploy the pipeline:
+```
+kapp deploy -a image-procesor-pipeline -f config/cifar/pipeline_app.yaml --logs -y  -nargo
+```
+
+* View the pipeline in the browser by navigating to https://argo-workflows.<your-domain-name>
+
+* To delete the pipeline:
+```
+kapp delete -a image-procesor-pipeline -y -nargo
 ```
