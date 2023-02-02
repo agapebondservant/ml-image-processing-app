@@ -107,10 +107,12 @@ def download_dataset(artifact):
                 # uri = uri.replace('mlflow-artifacts:',f'http:/{mlflow.get_tracking_uri()}/api/2.0/mlflow-artifacts/artifacts')
                 logging.info(f'Download uri: {uri}')
                 req = requests.get(uri)
-                with open(f'downloads/{artifact}', 'wb') as f:
+                download_path = f'downloads/{artifact}'
+                os.makedirs(os.path.dirname(f'downloads/{artifact}'), exist_ok=True)
+                with open(download_path, 'wb') as f:
                     f.write(req.content)
                     logging.info(f'{artifact} download complete.')
-                return f'downloads/{artifact}'
+                return download_path
     except http.client.IncompleteRead as icread:
         logging.info(f'Incomplete read...{icread}')
     except Exception as e:
@@ -212,7 +214,12 @@ def evaluate_model(model_name, model_flavor):
 
 # ## Make Prediction
 def predict(img, model_name, model_stage):
-    model = getattr(mlflow, 'tensorflow').load_model(f'models:/{model_name}/{model_stage}')
+    try:
+        model = getattr(mlflow, 'tensorflow').load_model(f'models:/{model_name}/{model_stage}')
+    except Exception as e:
+        logging.info('Could not load model at this time.')
+        return None
+
     labels = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 
     img = img_to_array(img)
