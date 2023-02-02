@@ -74,5 +74,5 @@ kubectl get app ml-image-processing-pipeline-app -nargo -oyaml
 
 * To delete the pipeline:
 ```
-kapp delete -a image-procesor-pipeline -y -nargo
+kapp delete -a image-procesor-pipeline-<THE PIPELINE ENVIRONMENT> -y -nargo
 ```
