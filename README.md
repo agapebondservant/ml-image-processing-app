@@ -41,7 +41,7 @@ tanzu package installed update tap --values-file ../tap/resources/tap-values-tbs
 
 * Deploy the app:
 ```
-tanzu apps workload create image-processor -f config/workload.yaml --yes
+tanzu apps workload create image-processor-api -f config/workload.yaml --yes
 ```
 
 * Tail the logs:
