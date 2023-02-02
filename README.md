@@ -46,17 +46,17 @@ tanzu apps workload create image-processor -f config/workload.yaml --yes
 
 * Tail the logs:
 ```
-tanzu apps workload tail image-processor --since 64h
+tanzu apps workload tail image-processor-api --since 64h
 ```
 
 * Once deployment succeeds, get the URL for the app:
 ```
-tanzu apps workload get image-processor #should yield image-processor.default.<your-domain>
+tanzu apps workload get image-processor-api #should yield image-processor.default.<your-domain>
 ```
 
 * To delete the app:
 ```
-tanzu apps workload delete image-processor --yes
+tanzu apps workload delete image-processor-api --yes
 ```
 
 ### Deploy the Training Pipeline
