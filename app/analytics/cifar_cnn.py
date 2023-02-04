@@ -225,7 +225,7 @@ def promote_model_to_staging(base_model_name, model_flavor):
         best_run_id = best_runs[0].info.run_id if len(best_runs) else None
 
         if best_run_id is not None:
-            mv = MlflowClient().search_model_versions(f'name like "{base_model_name}" and run_id="{best_run_id}"')
+            mv = MlflowClient().search_model_versions(f'name like "{base_model_name}%" and run_id="{best_run_id}"')
             if len(mv):
                 registered_model_name = mv[0].name
                 logging.info(f"Registered model name = {registered_model_name}, model being promoted = {base_model_name}")
@@ -250,7 +250,8 @@ def predict(img, model_name, model_stage):
     try:
         model = getattr(mlflow, 'tensorflow').load_model(f'models:/{model_name}/{model_stage}')
     except Exception as e:
-        logging.info('Could not load model at this time.')
+        logging.info(f'Could not load model at this time: for model name={model_name}, model stage={model_stage}')
+        traceback.print_exc()
         return None
 
     labels = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
