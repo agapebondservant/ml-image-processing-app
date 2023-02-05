@@ -256,8 +256,9 @@ def predict(img, model_name, model_stage):
 
     labels = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 
+    img = img.resize((32, 32))
     img = img_to_array(img)
-    img = img.reshape(1, 32, 32, 3)
+    img = img.reshape(-1, 32, 32, 3)
     img = img.astype('float32')
     img = img / 255.0
 
