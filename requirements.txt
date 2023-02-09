@@ -38,4 +38,7 @@ filelock==3.9.0
 pyarrow<7.0.0
 hickle
 python-multipart
+evidently
+pysqlite3-binary
+kfp
 .
