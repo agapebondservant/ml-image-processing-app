@@ -4,6 +4,8 @@
 
 * Deploy the app:
 ```
+source .env
+envsubst < config/workload-api.in.yaml > config/workload-api.yaml
 tanzu apps workload create image-processor-api-kfp -f config/workload.yaml --yes
 ```
 
