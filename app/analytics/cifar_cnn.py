@@ -224,8 +224,8 @@ def promote_model_to_staging(base_model_name, candidate_model_name, evaluation_d
             base_model = DummyClassifier().fit(dummy_data['x'], dummy_data['y'])
 
         # Generate and Save Evaluation Metrics
-        curr_data = _tensors_to_1d_prediction_and_target(test_data, test_labels, candidate_model)
-        ref_data = _tensors_to_1d_prediction_and_target(test_data, test_labels, base_model)
+        curr_data = _tensors_to_1d_prediction_and_target(test_data, test_labels, base_model)
+        ref_data = _tensors_to_1d_prediction_and_target(test_data, test_labels, candidate_model)
         tests = TestSuite(tests=[
             MulticlassClassificationTestPreset()
         ])
@@ -242,7 +242,11 @@ def promote_model_to_staging(base_model_name, candidate_model_name, evaluation_d
 
         # Determine the best model
         tests_results_json_tests = json.loads(tests_results_json)['tests']
+        f1_accuracy_results = np.array([test for test in tests_results_json_tests if test['name'] == 'F1 Score'])
         accuracy_results = np.array([test for test in tests_results_json_tests if test['name'] == 'Accuracy Score'])
+        logging.info(f"Results...f1 = ${f1_accuracy_results}, accuracy = ${accuracy_results}")
+        if len(f1_accuracy_results):
+            client.log_metric(artifact_run_id, 'f1_score', f1_accuracy_results[0]['parameters']['f1'])
         if len(accuracy_results):
             client.log_metric(artifact_run_id, 'accuracy_score', accuracy_results[0]['parameters']['accuracy'])
             promote_candidate_model = accuracy_results[0]['status'] == 'SUCCESS' or not preexisting_base_model_found
@@ -283,6 +287,12 @@ def predict(img, model_name, model_stage):
     logging.info(
         f'Predictions in order...list={prediction_results}, index={np.argmax(prediction_results)}, prediction={prediction}')
     return prediction
+
+
+# ## Get Metrics
+def get_metrics(metric_name=None):
+    metrics = mlflow_utils.get_experiment_metrics()
+    return metrics.get(metric_name) if metric_name else metrics
 
 
 def _tensors_to_1d_prediction_and_target(tensor_data, tensor_labels, tensor_model):
