@@ -85,3 +85,22 @@ kubectl -n argo exec $(kubectl get pod -n argo -l 'app=argo-server' -o jsonpath=
 ```
 kapp delete -a image-procesor-pipeline-<THE PIPELINE ENVIRONMENT> -y -nargo
 ```
+
+## Deploy the Training Pipeline Templates
+* cd to </root/of/branch/directory/with/appropriate/model/stage>
+  (Example: the **main** github branch represents the "main" environment, the **staging** github branch represents the "staging" environment, etc)
+
+* Deploy the pipeline templates:
+```
+ytt -f config/templates/ | kubectl apply -n argo -f -
+```
+
+* View progress:
+```
+watch kubectl get pods -nargo
+```
+
+* To delete the pipeline templates:
+```
+ytt -f config/templates/ | kubectl delete -n argo -f -
+```
