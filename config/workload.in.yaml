@@ -21,7 +21,7 @@ spec:
       value:
         type: openapi
         location:
-          path: "/app/static/openapi.json"
+          path: "/openapi.json"
           baseUrl: "http://image-processor-api-gp-main.default.${DATA_E2E_BASE_URL}"
         system: image-processors
         owner: team-image-processors
