@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset pgadmin:XYZCHANGESETID
+--changeset pgadmin:XYZCHANGESETID splitStatements:false
 CREATE EXTENSION IF NOT EXISTS plpython3u;
 CREATE OR REPLACE FUNCTION XYZDBSCHEMA.run_inference_task (img bytea,
     model_name text,
