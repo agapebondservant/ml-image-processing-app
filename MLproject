@@ -9,7 +9,7 @@ entry_points:
   train_model:
     parameters:
         dataset-name: {default: "mri"}
-        model-name: {default: "mri_cnn_a"}
+        model-name: {default: "mri_cnn"}
         model-flavor: {default: "tensorflow"}
         model-stage: {default: "None"}
         epochs: {type: float, default: 10}
@@ -17,13 +17,13 @@ entry_points:
   evaluate_model:
     parameters:
         dataset-name: {default: "mri"}
-        model-name: {default: "mri_cnn_a"}
+        model-name: {default: "mri_cnn"}
         model-flavor: {default: "tensorflow"}
     command: 'python -c "from app.analytics import mri_cnn; mri_cnn.evaluate_model(\"{model-name}\", \"{model-flavor}\")"'
   promote_model_to_staging:
     parameters:
         base_model-name: {default: "mri_cnn"}
-        candidate-model-name: {default: "mri_cnn_a"}
+        candidate-model-name: {default: "mri_cnn"}
         dataset-name: {default: "mri"}
         model-flavor: {default: "tensorflow"}
     command: 'python -c "from app.analytics import mri_cnn; mri_cnn.promote_model_to_staging(\"{base_model-name}\", \"{candidate-model-name}\", \"{dataset-name}\", \"{model-flavor}\")"'
