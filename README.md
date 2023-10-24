@@ -72,7 +72,7 @@ kapp deploy -a image-procesor-pipeline-<THE PIPELINE ENVIRONMENT>-mri -f config/
 
 * View progress:
 ```
-kubectl get app ml-image-processing-pipeline-<THE PIPELINE ENVIRONMENT> -oyaml  -nargo
+kubectl get app ml-image-processing-pipeline-<THE PIPELINE ENVIRONMENT>-mri -oyaml  -nargo
 OR
 watch kubectl get pods -n argo
 ```
