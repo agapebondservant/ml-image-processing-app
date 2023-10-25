@@ -14,6 +14,7 @@ spec:
         paths:
           - config/mri/pipeline.yaml
           - config/mri/values.yaml
+          - config/mri/job.yaml
 
   deploy:
     - kapp: {}

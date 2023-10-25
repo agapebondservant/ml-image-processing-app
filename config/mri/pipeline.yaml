@@ -4,10 +4,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Workflow
 metadata:
   name: ml-image-processing-workflow-mri
-  annotations:
-    kapp.k14s.io/versioned: ""
-    kapp.k14s.io/disable-wait: ""
-    kapp.k14s.io/num-versions: "1"
 spec:
   entrypoint: train
   templates:

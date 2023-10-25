@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pi
+  annotations:
+    kapp.k14s.io/update-strategy: always-replace
+spec:
+  template:
+    spec:
+      containers:
+        - name: submit-workflow
+          image: argoproj/argocli
+          args: ["resubmit ml-image-processing-workflow-mri", "exit 0"]
+      restartPolicy: Never
+  backoffLimit: 0
