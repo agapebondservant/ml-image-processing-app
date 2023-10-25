@@ -10,7 +10,12 @@ spec:
       containers:
         - name: submit-workflow
           image: argoproj/argocli
-          command: [bash]
-          args: ["argo resubmit ml-image-processing-workflow-mri --log 2>/dev/null || true"]
+          args: ["resubmit ml-image-processing-workflow-mri"]
       restartPolicy: Never
   backoffLimit: 0
+  podFailurePolicy:
+    rules:
+      - action: Ignore
+        onExitCodes:
+          operator: NotIn
+          values: [ 4200000 ]
