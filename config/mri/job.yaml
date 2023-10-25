@@ -13,7 +13,7 @@ spec:
         - name: resubmit-workflow
           image: oawofolu/argocli:latest
           command: [/bin/sh]
-          args: ["argo resubmit --log ml-image-processing-workflow-mri || true"]
+          args: ["-c", "argo resubmit --log ml-image-processing-workflow-mri || true"]
       restartPolicy: Never
   backoffLimit: 0
   podFailurePolicy:
