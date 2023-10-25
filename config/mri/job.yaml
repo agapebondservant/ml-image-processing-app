@@ -9,10 +9,6 @@ metadata:
 spec:
   template:
     spec:
-      initContainers:
-        - name: check-if-workflow-exists
-          image: argoproj/argocli
-          args: ["stop", "ml-image-processing-workflow-mri"]
       containers:
         - name: resubmit-workflow
           image: argoproj/argocli
