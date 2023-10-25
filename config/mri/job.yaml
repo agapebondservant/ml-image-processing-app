@@ -1,14 +1,18 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: submit-workflow
+  name: resubmit-workflow
   annotations:
     kapp.k14s.io/update-strategy: always-replace
 spec:
   template:
     spec:
+      initContainers:
+        - name: check-if-workflow-exists
+          image: argoproj/argocli
+          args: ["get", "ml-image-processing-workflow-mri"]
       containers:
-        - name: submit-workflow
+        - name: resubmit-workflow
           image: argoproj/argocli
           args: ["resubmit", "--log", "ml-image-processing-workflow-mri"]
       restartPolicy: Never

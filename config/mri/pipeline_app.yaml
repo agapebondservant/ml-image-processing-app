@@ -12,9 +12,9 @@ spec:
   template:
     - ytt:
         paths:
+          - config/mri/job.yaml
           - config/mri/pipeline.yaml
           - config/mri/values.yaml
-          - config/mri/job.yaml
 
   deploy:
     - kapp: {}
