@@ -10,7 +10,7 @@ spec:
       containers:
         - name: submit-workflow
           image: argoproj/argocli
-          args: ["resubmit", "--log ml-image-processing-workflow-mri"]
+          args: ["resubmit", "--log", "ml-image-processing-workflow-mri"]
       restartPolicy: Never
   backoffLimit: 0
   podFailurePolicy:
