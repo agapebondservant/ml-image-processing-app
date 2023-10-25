@@ -6,6 +6,7 @@ metadata:
     kapp.k14s.io/update-strategy: always-replace
     kapp.k14s.io/change-group: "apps.big.co/argo-pipeline-job"
     kapp.k14s.io/change-rule: "upsert before upserting apps.big.co/argo-pipelines"
+    kapp.k14s.io/nonce: ""
 spec:
   template:
     spec:
