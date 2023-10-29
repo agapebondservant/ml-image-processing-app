@@ -6,6 +6,7 @@ metadata:
   name: ml-image-processing-workflow-mri
   annotations:
     kapp.k14s.io/change-group: "apps.big.co/argo-pipelines"
+    kapp.k14s.io/disable-original: ""
 spec:
   entrypoint: train
   templates:
