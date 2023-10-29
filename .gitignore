@@ -13,5 +13,10 @@ cifar10.parquet
 app.log
 tmp.yaml
 tmp.json
-data
+*.hkl
+*.parquet
 data.zip
+data
+Dockerfile-argocli
+config/mri/gitdata.json
+config/mri/kapp-config.yaml
