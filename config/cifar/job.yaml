@@ -4,7 +4,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: #@ "resubmit-workflow-" + json.decode(data.read("mainmri"))["sha"]
+  name: #@ "resubmit-workflow-" + json.decode(data.read("main"))["sha"]
   annotations:
     kapp.k14s.io/change-group: "apps.big.co/argo-pipeline-job"
     kapp.k14s.io/change-rule: "upsert before upserting apps.big.co/argo-pipelines"
@@ -15,7 +15,7 @@ spec:
         - name: resubmit-workflow
           image: oawofolu/argocli:latest
           command: [/bin/sh]
-          args: ["-c", "argo resubmit --log ml-image-processing-workflow-mri || true"]
+          args: ["-c", "argo resubmit --log ml-image-processing-workflow || true"]
       restartPolicy: Never
   backoffLimit: 0
   podFailurePolicy:
