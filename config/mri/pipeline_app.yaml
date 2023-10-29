@@ -10,15 +10,14 @@ spec:
         ref: origin/mainmri
     - http:
         url: https://api.github.com/repos/agapebondservant/ml-image-processing-app/commits/mainmri
-      path: /tmp
 
   template:
     - ytt:
         paths:
-          - config/mri/job.yaml
-          - config/mri/pipeline.yaml
-          - config/mri/values.yaml
-          - /tmp/mainmri
+          - 0/config/mri/job.yaml
+          - 0/config/mri/pipeline.yaml
+          - 0/config/mri/values.yaml
+          - 1/mainmri
 
   deploy:
     - kapp: {}

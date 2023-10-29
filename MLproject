@@ -22,8 +22,8 @@ entry_points:
     command: 'python -c "from app.analytics import mri_cnn; mri_cnn.evaluate_model(\"{model-name}\", \"{model-flavor}\")"'
   promote_model_to_staging:
     parameters:
-        base_model-name: {default: "mri_cnn"}
+        base-model-name: {default: "mri_cnn"}
         candidate-model-name: {default: "mri_cnn_b"}
         dataset-name: {default: "mri"}
         model-flavor: {default: "tensorflow"}
-    command: 'python -c "from app.analytics import mri_cnn; mri_cnn.promote_model_to_staging(\"{base_model-name}\", \"{candidate-model-name}\", \"{dataset-name}\", \"{model-flavor}\")"'
+    command: 'python -c "from app.analytics import mri_cnn; mri_cnn.promote_model_to_staging(\"{base-model-name}\", \"{candidate-model-name}\", \"{dataset-name}\", \"{model-flavor}\")"'

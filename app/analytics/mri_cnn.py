@@ -138,11 +138,11 @@ def download_model(model_name, model_flavor, best_run_id=None, retries=2):
             else:
                 versions = client.get_latest_versions(model_name)
             logging.info(f"In download model...search model results = {versions}")
-            if len(versions) and versions[0].current_stage.lower() != 'production':
+            if len(versions):
                 version = versions[0].version
                 model = getattr(mlflow, model_flavor).load_model(f'models:/{model_name}/{version}')
             else:
-                logging.info(f"No suitable candidate model found for {model_name}...")
+                logging.info(f"No model found for {model_name}...")
         except Exception as e:
             if retries > 0:
                 logging.error(f"Could not download {model_name} - retrying...")
@@ -192,6 +192,7 @@ def train_model(model_name, model_flavor, model_stage, data, epochs=10):
         test_loss, test_acc = model.evaluate(data.get('test_data'), data.get('test_labels'), verbose=2)
         client.log_metric(artifact_run_id, 'testing_loss', test_loss)
         client.log_metric(artifact_run_id, 'testing_accuracy', test_acc)
+        client.log_metric(artifact_run_id, 'epochs', epochs)
         getattr(mlflow, model_flavor).autolog(log_models=False)
 
         # Register model
@@ -217,12 +218,14 @@ def evaluate_model(model_name, model_flavor):
 
         if best_run_id is not None:
             (model, version) = download_model(model_name, model_flavor, best_run_id=best_run_id)
-            logging.info(f"Found best model for experiments {experiment_name}, model name {model_name} : {model}")
-            MlflowClient().transition_model_version_stage(
-                name=model_name,
-                version=version,
-                stage="Staging"
-            )
+            model_stage = version.current_stage if version else 'None'
+            logging.info(f"Found best model for experiments {experiment_name}, model name {model_name} : {model}, stage={model_stage}")
+            if model_stage.lower() != 'production':
+                MlflowClient().transition_model_version_stage(
+                    name=model_name,
+                    version=version,
+                    stage="Staging"
+                )
 
 
 # ## Promote Model to Staging
