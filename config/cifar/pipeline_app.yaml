@@ -19,7 +19,7 @@ spec:
           - 0/config/cifar/job.yaml
           - 0/config/cifar/pipeline.yaml
           - 0/config/cifar/values.yaml
-          - #@ "1/" + data.values.environment_name
+          - #@ "1/{}".format(data.values.environment_name)
 
   deploy:
     - kapp: {}
