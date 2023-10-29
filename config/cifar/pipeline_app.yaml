@@ -8,10 +8,10 @@ spec:
   serviceAccountName: default
   fetch:
     - git:
-        url: #@ "https://github.com/" + data.values.git_repo_user + "/" + data.values.git_repo_app
-        ref: #@ "origin/" + data.values.environment_name
+        url: #@ "https://github.com/{}/{}".format(data.values.git_repo_user,data.values.git_repo_app)
+        ref: #@ "origin/{}".format(data.values.environment_name)
     - http:
-        url: #@ "https://api.github.com/repos/" + data.values.git_repo_user + "/" + data.values.git_repo_app + "/commits/" + data.values.environment_name
+        url: #@ "https://api.github.com/repos/{}/{}/commits/{}".format(data.values.git_repo_user, data.values.git_repo_app, data.values.environment_name)
 
   template:
     - ytt:
