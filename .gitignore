@@ -18,3 +18,5 @@ tmp.json
 data.zip
 data
 Dockerfile-argocli
+config/mri/gitdata.json
+config/mri/kapp-config.yaml
