@@ -38,6 +38,9 @@ async def predict(file: UploadFile) -> str:
 
 
 def generate_schema():
+    """
+    Used to render OpenAPI schema as a static page in Streamlit apps
+    """
     with open('app/analytics/static/openapi.json', 'w') as f:
         json.dump(get_openapi(
             title=api_app.title,
@@ -46,3 +49,21 @@ def generate_schema():
             description=api_app.description,
             routes=api_app.routes,
         ), f, indent=4)
+
+
+def custom_openapi():
+    openapi_schema = get_openapi(
+        title=api_app.title,
+        version=api_app.version,
+        openapi_version="3.0.2",
+        description=api_app.description,
+        routes=api_app.routes,
+    )
+    openapi_schema["info"]["x-logo"] = {
+        "url": "https://blogs.vmware.com/cloudprovider/files/2021/11/tanzu-logo.png"
+    }
+    api_app.openapi_schema = openapi_schema
+    return api_app.openapi_schema
+
+
+api_app.openapi = custom_openapi
