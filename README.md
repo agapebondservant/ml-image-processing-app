@@ -67,7 +67,7 @@ tanzu apps workload delete image-processor --yes
 
 * Deploy the pipeline:
 ```
-kapp deploy -a image-procesor-pipeline-<THE PIPELINE ENVIRONMENT> -f config/cifar/pipeline_app.yaml --logs -y  -nargo
+ytt -f config/cifar/pipeline_app.yaml -f config/cifar/values.yaml | kapp deploy -a image-procesor-pipeline-<THE PIPELINE ENVIRONMENT> --logs -y  -nargo -f -
 ```
 
 * View progress:
