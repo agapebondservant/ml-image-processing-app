@@ -42,7 +42,7 @@ def generate_schema():
         json.dump(get_openapi(
             title=api_app.title,
             version=api_app.version,
-            openapi_version=api_app.openapi_version,
+            openapi_version="3.0.2",
             description=api_app.description,
             routes=api_app.routes,
         ), f, indent=4)
