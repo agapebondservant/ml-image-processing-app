@@ -38,6 +38,9 @@ async def predict(file: UploadFile) -> str:
 
 
 def generate_schema():
+    """
+    Used to render OpenAPI schema as a static page in Streamlit apps
+    """
     with open('app/analytics/static/openapi.json', 'w') as f:
         json.dump(get_openapi(
             title=api_app.title,
