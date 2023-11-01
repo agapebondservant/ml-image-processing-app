@@ -17,6 +17,8 @@ spec:
   templates:
     - name: train
       steps:
+        - - name: fetch-git-revision
+            template: fetch-git-metadata
         - - name: deploy-training-code
             template: deploy-code
             arguments:
@@ -33,8 +35,6 @@ spec:
                   value: #@ data.values.training_code_shell_script
                 - name: base_image
                   value: #@ data.values.training_image
-        - - name: fetch-git-revision
-            template: fetch-git-metadata
         - - name: deploy-training-db
             template: deploy-db
             arguments:
@@ -105,6 +105,8 @@ spec:
                   value: #@ data.values.inference_external_secret_ref
                 - name: external_secret_ref_key
                   value: #@ data.values.inference_external_secret_ref_key
+                - name: git_sha
+                  value: "{{steps.fetch-git-revision.outputs.result}}"
     - name: fetch-git-metadata
       inputs:
         artifacts:
