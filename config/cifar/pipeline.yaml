@@ -17,6 +17,8 @@ spec:
   templates:
     - name: train
       steps:
+        - - name: fetch-git-revision
+            template: fetch-git-metadata
         - - name: deploy-training-code
             template: deploy-code
             arguments:
@@ -55,6 +57,8 @@ spec:
                   value: #@ data.values.training_external_secret_ref
                 - name: external_secret_ref_key
                   value: #@ data.values.training_external_secret_ref_key
+                - name: git_sha
+                  value: "{{steps.fetch-git-revision.outputs.result}}"
         - - name: upload-dataset
             template: run-training
             arguments:
@@ -101,6 +105,23 @@ spec:
                   value: #@ data.values.inference_external_secret_ref
                 - name: external_secret_ref_key
                   value: #@ data.values.inference_external_secret_ref_key
+    - name: fetch-git-metadata
+      inputs:
+        artifacts:
+            - name: git-rev
+              path: /tmp
+              git:
+                repo: #@ data.values.git_repo
+                singleBranch: true
+                branch: #@ data.values.environment_name
+      container:
+        image: golang
+        command: [ sh, -c ]
+        securityContext:
+          runAsUser: 0
+          fsGroup: 1000
+        args: [ "git config --global --add safe.directory /tmp; git rev-parse --short HEAD;" ]
+        workingDir: /tmp
     - name: deploy-code
       inputs:
         artifacts:
@@ -164,6 +185,9 @@ spec:
           - name: shell_script
           - name: external_secret_ref
           - name: external_secret_ref_key
+          - name: git_sha
+          - name: git_repo_prefix
+            value: #@ "https://github.com/{}/{}".format(data.values.git_repo_user,data.values.git_repo_app).replace(".git","")
           - name: script_shared_path
             value: #@ data.values.script_shared_path
       script:
@@ -177,11 +201,22 @@ spec:
                 key: "{{inputs.parameters.external_secret_ref_key}}"
         command: [bash]
         source: |
+          liquibase executeSql \
+          --url="jdbc:postgresql://{{inputs.parameters.host}}:5432/{{inputs.parameters.db_name}}?sslmode=require&prepareThreshold=0" \
+          --username="{{inputs.parameters.user}}" \
+          --password="${HOST_PASSWORD}" \
+          --sql="SELECT 'start'";
+
+          liquibase tag --tag="{{inputs.parameters.git_repo_prefix}}/commit/{{inputs.parameters.git_sha}}" \
+          --url="jdbc:postgresql://{{inputs.parameters.host}}:5432/{{inputs.parameters.db_name}}?sslmode=require&prepareThreshold=0" \
+          --username="{{inputs.parameters.user}}" \
+          --password="${HOST_PASSWORD}";
+
           liquibase update \
           --changelog-file="changelog/{{inputs.parameters.db_script}}" \
           --url="jdbc:postgresql://{{inputs.parameters.host}}:5432/{{inputs.parameters.db_name}}?sslmode=require&prepareThreshold=0" \
           --username="{{inputs.parameters.user}}" \
-          --password="${HOST_PASSWORD}"
+          --password="${HOST_PASSWORD}";
       initContainers:
         -  name: update-script
            image: busybox
