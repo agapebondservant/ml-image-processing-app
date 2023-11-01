@@ -9,6 +9,7 @@ metadata:
     kapp.k14s.io/disable-original: ""
 spec:
   entrypoint: train
+  onExit: exit-handler
   volumes:
     - name: secret-vol
       secret:
@@ -124,6 +125,43 @@ spec:
           fsGroup: 1000
         args: [ "git config --global --add safe.directory /tmp; git rev-parse --short HEAD;" ]
         workingDir: /tmp
+
+    - name: exit-handler
+      inputs:
+        parameters:
+          - name: user
+            value: #@ data.values.training_user
+          - name: host
+            value: #@ data.values.training_master
+          - name: db_name
+            value: #@ data.values.training_db_name
+          - name: db_schema
+            value: #@ data.values.training_db_schema
+          - name: shared_path
+            value: #@ data.values.training_shared_path
+          - name: shell_script
+            value: #@ data.values.training_db_shell_script
+          - name: db_script
+            value: #@ data.values.training_db_script
+          - name: external_secret_ref
+            value: #@ data.values.training_external_secret_ref
+          - name: external_secret_ref_key
+            value: #@ data.values.training_external_secret_ref_key
+      script:
+        image: liquibase/liquibase
+        env:
+          - name: HOST_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: "{{inputs.parameters.external_secret_ref}}"
+                key: "{{inputs.parameters.external_secret_ref_key}}"
+        command: [ bash ]
+        source: |
+          liquibase releaseLocks \
+          --url="jdbc:postgresql://{{inputs.parameters.host}}:5432/{{inputs.parameters.db_name}}?sslmode=require&prepareThreshold=0" \
+          --username="{{inputs.parameters.user}}" \
+          --password="${HOST_PASSWORD}";
+          
     - name: deploy-code
       inputs:
         artifacts:
