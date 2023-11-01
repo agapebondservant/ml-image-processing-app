@@ -161,7 +161,7 @@ spec:
           --url="jdbc:postgresql://{{inputs.parameters.host}}:5432/{{inputs.parameters.db_name}}?sslmode=require&prepareThreshold=0" \
           --username="{{inputs.parameters.user}}" \
           --password="${HOST_PASSWORD}";
-          
+
     - name: deploy-code
       inputs:
         artifacts:
@@ -256,7 +256,8 @@ spec:
           --changelog-file="changelog/{{inputs.parameters.db_script}}" \
           --url="jdbc:postgresql://{{inputs.parameters.host}}:5432/{{inputs.parameters.db_name}}?sslmode=require&prepareThreshold=0" \
           --username="{{inputs.parameters.user}}" \
-          --password="${HOST_PASSWORD}";
+          --password="${HOST_PASSWORD}" \
+          --log-level=INFO;
       initContainers:
         -  name: update-script
            image: busybox
