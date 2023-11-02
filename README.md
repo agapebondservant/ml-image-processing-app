@@ -5,6 +5,14 @@ alt="Markdown Monster icon"
 style="float: left; margin-right: 10px;" />
 
 ## Pre-requisites
+
+* Required installations:
+  [ ] Kubernetes cluster
+  [ ] Tanzu Application Platform
+  [ ] MLflow Tracking Server
+  [ ] Greenplum instance (Required for in-database pipeline)
+  [ ] Postgres instance (Required for in-database pipeline)
+
 * Set up a **pre-commit** Git hook which will take care of autogenerating OpenAPI docs:
 ```
 tee -a .git/hooks/pre-commit <<FILE
