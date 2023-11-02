@@ -1,5 +1,9 @@
 # ML Image Processing App
 
+<img src="image.png"
+alt="Markdown Monster icon"
+style="float: left; margin-right: 10px;" />
+
 ## Pre-requisites
 * Set up a **pre-commit** Git hook which will take care of autogenerating OpenAPI docs:
 ```
