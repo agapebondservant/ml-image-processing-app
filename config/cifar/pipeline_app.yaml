@@ -10,16 +10,14 @@ spec:
     - git:
         url: #@ "https://github.com/{}/{}".format(data.values.git_repo_user,data.values.git_repo_app)
         ref: #@ "origin/{}".format(data.values.environment_name)
-    - http:
-        url: #@ "https://api.github.com/repos/{}/{}/commits/{}".format(data.values.git_repo_user, data.values.git_repo_app, data.values.environment_name)
 
   template:
     - ytt:
         paths:
-          - 0/config/cifar/job.yaml
-          - 0/config/cifar/pipeline.yaml
-          - 0/config/cifar/values.yaml
-          - #@ "1/{}".format(data.values.environment_name)
+          - config/cifar/job.yaml
+          - config/cifar/pipeline.yaml
+          - config/cifar/values.yaml
+          - kapp-marker
 
   deploy:
     - kapp: {}
