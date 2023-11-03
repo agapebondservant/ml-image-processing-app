@@ -10,16 +10,14 @@ spec:
     - git:
         url: #@ "https://github.com/" + data.values.git_repo_user + "/" + data.values.git_repo_app
         ref: #@ "origin/" + data.values.environment_name
-    - http:
-        url: #@ "https://api.github.com/repos/" + data.values.git_repo_user + "/" + data.values.git_repo_app + "/commits/" + data.values.environment_name
 
   template:
     - ytt:
         paths:
-          - 0/config/mri/job.yaml
-          - 0/config/mri/pipeline.yaml
-          - 0/config/mri/values.yaml
-          - #@ "1/" + data.values.environment_name
+          - config/mri/job.yaml
+          - config/mri/pipeline.yaml
+          - config/mri/values.yaml
+          - kapp-marker
 
   deploy:
     - kapp: {}
