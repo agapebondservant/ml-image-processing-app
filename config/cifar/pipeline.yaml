@@ -1,10 +1,10 @@
 #@ load("@ytt:data", "data")
-#@ load("@ytt:json", "json")
+#@ load("@ytt:yaml", "yaml")
 ---
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: #@ "ml-image-processing-pipeline-kfpmain-{}".format(json.decode(data.read(data.values.environment_name))["sha"])
+  name: #@ "ml-image-processing-pipeline-kfpmain-{}".format(yaml.decode(data.read("kapp-marker"))["marker"])
 spec:
   template:
     spec:
