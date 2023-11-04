@@ -12,6 +12,13 @@ git add app/analytics/static/api-docs/openapi.json
 FILE
 ```
 
+* Install **kappgit** (community executable which will automatically add a new marker file on commit):
+```
+wget -O /usr/local/bin/kappgit https://raw.githubusercontent.com/agapebondservant/kappgit/main/kappgit
+chmod +x /usr/local/bin/kappgit
+kappgit
+```
+
 * Set up secrets:
 ```
 source .env
