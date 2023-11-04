@@ -13,16 +13,22 @@ style="float: left; margin-right: 10px;" />
   [ ] Greenplum instance (Required for in-database pipeline)
   [ ] Postgres instance (Required for in-database pipeline)
 
-* Set up a **pre-commit** Git hook which will take care of autogenerating OpenAPI docs and kapp-controller marker:
+* Set up a **pre-commit** Git hook which will take care of autogenerating OpenAPI docs:
 ```
 tee -a .git/hooks/pre-commit <<FILE
-config/shell/pre-commit-hook.sh
 echo "Generate OpenAPI schema docs................"
 $(which python3) -c "from app.analytics import api; api.generate_schema()"
 echo "OpenAPI schema docs generated."
 echo "Adding OpenAPI schema to repo..."
 git add app/analytics/static/openapi.json
 FILE
+```
+
+* Install **kappgit** (community executable which will automatically add a new marker file on commit):
+```
+wget -O /usr/local/bin/kappgit https://raw.githubusercontent.com/agapebondservant/kappgit/main/kappgit
+chmod +x /usr/local/bin/kappgit
+kappgit
 ```
 
 * Set up secrets:
