@@ -1,9 +1,9 @@
 apiVersion: kpack.io/v1alpha2
 kind: Image
 metadata:
-  name: tested-image
+  name: ml-image-processing-pipeline-app-image
 spec:
-  tag: oawofolu/tested-image
+  tag: oawofolu/ml-image-processing-pipeline-app-image
   builder:
     kind: ClusterBuilder
     name: procfile

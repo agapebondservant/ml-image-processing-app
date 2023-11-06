@@ -10,14 +10,17 @@ spec:
     - git:
         url: #@ "https://github.com/{}/{}".format(data.values.git_repo_user,data.values.git_repo_app)
         ref: #@ "origin/{}".format(data.values.environment_name)
+    - image:
+        url: #@ "oawofolu/ml-image-processing-pipeline-app-image"
 
   template:
     - ytt:
         paths:
-          - config/cifar/job.yaml
-          - config/cifar/pipeline.yaml
-          - config/cifar/values.yaml
-          - kapp-marker
+          - 0/config/cifar/job.yaml
+          - 0/config/cifar/pipeline.yaml
+          - 0/config/cifar/values.yaml
+          - 0/config/images/image.yaml
+          - 1/tmp/kapp-marker.yaml
 
   deploy:
     - kapp: {}
