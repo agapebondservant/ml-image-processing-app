@@ -1,1 +1,1 @@
-web: echo date +"%Y%m%d%H%M%S" > main && ls -ltra .
+web: touch ./main && chmod 666 ./main && echo date +"%Y%m%d%H%M%S" > ./main && ls -ltra .
