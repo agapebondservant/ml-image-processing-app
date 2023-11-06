@@ -1,1 +1,1 @@
-web: git rev-parse --short HEAD
+web: echo date +"%Y%m%d%H%M%S" > main && ls -ltra .
