@@ -1,1 +1,1 @@
-web: echo date +"%Y%m%d%H%M%S" > main && cat main
+web: echo "sha:" date +"%Y%m%d%H%M%S" > $(pwd)/main.yaml && cat $(pwd)/main.yaml
