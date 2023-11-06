@@ -1,1 +1,1 @@
-web: echo "sha:" date +"%Y%m%d%H%M%S" && ls -ltra
+web: $(pwd)/main.sh
