@@ -1,0 +1,18 @@
+apiVersion: kpack.io/v1alpha2
+kind: ClusterBuilder
+metadata:
+  name: procfile
+spec:
+  order:
+  - group:
+    - id: paketo-buildpacks/procfile
+  serviceAccountRef:
+    name: kp-default-repository-serviceaccount
+    namespace: kpack
+  stack:
+    kind: ClusterStack
+    name: tiny-jammy
+  store:
+    kind: ClusterStore
+    name: default
+  tag: oawofolu/tap-build-service:clusterbuilder-procfile
