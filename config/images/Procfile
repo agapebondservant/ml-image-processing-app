@@ -1,1 +1,1 @@
-sha: ls -ltra .
+default: ls -ltra .
