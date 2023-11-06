@@ -1,1 +1,1 @@
-web: ls -ltra .
+web: git rev-parse --short HEAD
