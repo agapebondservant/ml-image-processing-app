@@ -18,7 +18,6 @@ spec:
   template:
     - ytt:
         paths:
-          - 0/config/images/image.yaml
           - 0/config/cifar/job.yaml
           - 0/config/cifar/pipeline.yaml
           - 0/config/cifar/values.yaml
