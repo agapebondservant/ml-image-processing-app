@@ -5,7 +5,7 @@ metadata:
   kapp.k14s.io/change-group: "apps.big.co/stamped-image"
   kapp.k14s.io/change-rule: "upsert before upserting apps.big.co/argo-pipeline-job"
 spec:
-  tag: oawofolu/ml-image-processing-pipeline-app-image
+  tag: oawofolu/ml-image-processing-pipeline-app-image:latest
   builder:
     kind: ClusterBuilder
     name: procfile
