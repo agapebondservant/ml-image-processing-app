@@ -2,6 +2,8 @@ apiVersion: kpack.io/v1alpha2
 kind: Image
 metadata:
   name: ml-image-processing-pipeline-app-image
+  kapp.k14s.io/change-group: "apps.big.co/stamped-image"
+  kapp.k14s.io/change-rule: "upsert before upserting apps.big.co/argo-pipeline-job"
 spec:
   tag: oawofolu/ml-image-processing-pipeline-app-image
   builder:
