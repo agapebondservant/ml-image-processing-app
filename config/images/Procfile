@@ -1,1 +1,1 @@
-default: ls -ltra .
+web: ls -ltra .
