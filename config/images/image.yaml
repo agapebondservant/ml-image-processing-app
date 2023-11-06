@@ -11,8 +11,7 @@ spec:
     git:
       url: https://github.com/agapebondservant/ml-image-processing-app.git
       revision: main
-      subPath: config/images
+    subPath: config/images
   cache:
     volume:
       size: 8G
-  defaultProcess: sha

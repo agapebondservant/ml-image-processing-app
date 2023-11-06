@@ -11,7 +11,7 @@ spec:
     namespace: kpack
   stack:
     kind: ClusterStack
-    name: tiny-jammy
+    name: default
   store:
     kind: ClusterStore
     name: default
