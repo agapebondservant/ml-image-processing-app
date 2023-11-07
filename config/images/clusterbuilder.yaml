@@ -5,7 +5,7 @@ metadata:
 spec:
   order:
   - group:
-    - id: tanzu-buildpacks/go
+    - id: tanzu-buildpacks/nodejs
   - group:
     - id: paketo-buildpacks/procfile
   serviceAccountRef:
