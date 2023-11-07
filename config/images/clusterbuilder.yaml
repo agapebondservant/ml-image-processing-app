@@ -5,9 +5,9 @@ metadata:
 spec:
   order:
   - group:
-    - id: paketo-buildpacks/procfile
-  - group:
     - id: tanzu-buildpacks/go
+  - group:
+    - id: paketo-buildpacks/procfile
   serviceAccountRef:
     name: kp-default-repository-serviceaccount
     namespace: kpack

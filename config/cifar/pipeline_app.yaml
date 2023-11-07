@@ -21,7 +21,7 @@ spec:
           - 0/config/cifar/job.yaml
           - 0/config/cifar/pipeline.yaml
           - 0/config/cifar/values.yaml
-          - 1/layers/kapp-marker.yaml
+          - 1/workspace/kapp-marker.yaml
 
   deploy:
     - kapp: {}

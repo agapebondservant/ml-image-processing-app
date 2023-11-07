@@ -1,3 +1,3 @@
 #!/bin/bash
-echo "sha: "$(date +"%Y%m%d%H%M%S") > /layers/kapp-marker.yaml
+echo "sha: "$(date +"%Y%m%d%H%M%S") > /workspace/kapp-marker.yaml
 bash
