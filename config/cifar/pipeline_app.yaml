@@ -14,6 +14,7 @@ spec:
         url: #@ "oawofolu/ml-image-processing-pipeline-app-image"
         secretRef:
           name: image-pull-secret
+        subPath: /layers
 
   template:
     - ytt:
@@ -21,7 +22,7 @@ spec:
           - 0/config/cifar/job.yaml
           - 0/config/cifar/pipeline.yaml
           - 0/config/cifar/values.yaml
-          - 1/tmp/kapp-marker.yaml
+          - 1/kapp-marker.yaml
 
   deploy:
     - kapp: {}
