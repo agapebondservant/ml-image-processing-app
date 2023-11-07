@@ -1,3 +1,3 @@
-module github.com/paketo-buildpacks/samples/go/mod
+module config/images
 
 go 1.15
