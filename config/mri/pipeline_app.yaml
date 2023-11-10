@@ -17,7 +17,7 @@ spec:
           - config/mri/job.yaml
           - config/mri/pipeline.yaml
           - config/mri/values.yaml
-          - kapp-marker
+          - .git/HEAD
 
   deploy:
     - kapp: {}
