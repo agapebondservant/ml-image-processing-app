@@ -170,6 +170,9 @@ def train_model(model_name, model_flavor, model_stage, data, epochs=10):
         client.log_metric(artifact_run_id, 'epochs', epochs)
         getattr(mlflow, model_flavor).autolog(log_models=False)
 
+        # Log Explainability
+        mlflow.shap.log_explanation(model.predict, data.get('training_data'))
+
         # Register model
         getattr(mlflow, model_flavor).log_model(model,
                                                 artifact_path=model_name,
