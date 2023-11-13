@@ -57,6 +57,7 @@ spec:
             value: #@ data.values.environment_name
       container:
         image: oawofolu/ml-image-processor
+        imagePullPolicy: Always
         command: [python]
         args:
           - ./app/main.py
