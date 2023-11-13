@@ -66,4 +66,3 @@ spec:
           - git_repo="{{inputs.parameters.git_repo}}"
           - experiment_name="{{inputs.parameters.experiment_name}}"
           - environment_name="{{inputs.parameters.environment_name}}"
-
