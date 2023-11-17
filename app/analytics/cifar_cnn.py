@@ -171,8 +171,7 @@ def train_model(model_name, model_flavor, model_stage, data, epochs=10):
         getattr(mlflow, model_flavor).autolog(log_models=False)
 
         # Log Explainability
-        logging.error(f"Current training data shape = {data.get('training_data').shape}")
-        mlflow.shap.log_explanation(model.predict, data.get('training_data').reshape(1, -1))
+        # mlflow.shap.log_explanation(model.predict, data.get('training_data').reshape(1, -1))
 
         # Register model
         getattr(mlflow, model_flavor).log_model(model,
