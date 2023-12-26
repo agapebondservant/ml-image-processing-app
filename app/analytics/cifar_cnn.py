@@ -234,7 +234,7 @@ def promote_model_to_staging(base_model_name, candidate_model_name, evaluation_d
             size, num_classes = test_labels.shape[0], 10
             dummy_data = pd.DataFrame({'x': np.random.randint(0, num_classes, size),
                                        'y': test_labels.reshape(size, )})
-            base_model = DummyClassifier().fit(dummy_data['x'], dummy_data['y'])
+            base_model = DummyClassifier(strategy='uniform').fit(dummy_data['x'], dummy_data['y'])
 
         # Generate and Save Evaluation Metrics
         curr_data = _tensors_to_1d_prediction_and_target(test_data, test_labels, candidate_model)
@@ -259,9 +259,9 @@ def promote_model_to_staging(base_model_name, candidate_model_name, evaluation_d
         accuracy_results = np.array([test for test in tests_results_json_tests if test['name'] == 'Accuracy Score'])
         logging.info(f"Results...f1 = ${f1_accuracy_results}, accuracy = ${accuracy_results}")
         if len(f1_accuracy_results):
-            client.log_metric(artifact_run_id, 'f1_score', f1_accuracy_results[0]['parameters']['f1'])
+            client.log_metric(artifact_run_id, 'f1_score', f1_accuracy_results[0]['parameters']['value'])
         if len(accuracy_results):
-            client.log_metric(artifact_run_id, 'accuracy_score', accuracy_results[0]['parameters']['accuracy'])
+            client.log_metric(artifact_run_id, 'accuracy_score', accuracy_results[0]['parameters']['value'])
             promote_candidate_model = accuracy_results[0]['status'] == 'SUCCESS' or not preexisting_base_model_found
 
             # Promote the best model
