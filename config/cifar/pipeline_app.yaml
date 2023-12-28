@@ -14,7 +14,7 @@ spec:
         paths:
           - config/cifar/pipeline.yaml
           - config/cifar/values.yaml
-          - kapp-marker
+          - .git/HEAD
 
   deploy:
     - kapp: {}
