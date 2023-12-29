@@ -9,6 +9,9 @@ metadata:
     kapp.k14s.io/disable-original: ""
 spec:
   entrypoint: train
+  synchronization:
+    mutex:
+      name: object-classification-gp
   onExit: exit-handler
   volumes:
     - name: secret-vol
