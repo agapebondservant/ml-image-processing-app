@@ -103,7 +103,7 @@ def download_dataset(artifact):
 
 
 def download_model(model_name, model_flavor, best_run_id=None, retries=2):
-    model, version = None, 0
+    model, version, current_stage = None, 0, 'None'
     with mlflow.start_run(run_name='download_model', nested=True) as active_run:
         mlflow_utils.prep_mlflow_run(active_run)
         try:
@@ -115,6 +115,7 @@ def download_model(model_name, model_flavor, best_run_id=None, retries=2):
             logging.info(f"In download model...search model results = {versions}")
             if len(versions):
                 version = versions[0].version
+                current_stage = versions[0].current_stage
                 model = getattr(mlflow, model_flavor).load_model(f'models:/{model_name}/{version}')
             else:
                 logging.info(f"No model found for {model_name}...")
@@ -125,7 +126,7 @@ def download_model(model_name, model_flavor, best_run_id=None, retries=2):
                 download_model(model_name, model_flavor, best_run_id=best_run_id, retries=retries - 1)
             else:
                 logging.error(f'Could not complete download for model {model_name} - error occurred: ', exc_info=True)
-        return model, version
+        return model, version, current_stage
 
 
 # ## Train Model
@@ -195,8 +196,7 @@ def evaluate_model(model_name, model_flavor):
         best_run_id = best_runs[0].info.run_id if len(best_runs) else None
 
         if best_run_id is not None:
-            (model, version) = download_model(model_name, model_flavor, best_run_id=best_run_id)
-            model_stage = version.current_stage if version else 'None'
+            (model, version, model_stage) = download_model(model_name, model_flavor, best_run_id=best_run_id)
             logging.info(f"Found best model for experiments {experiment_name}, model name {model_name} : {model}, stage={model_stage}")
             if model_stage.lower() != 'production':
                 MlflowClient().transition_model_version_stage(
@@ -221,8 +221,8 @@ def promote_model_to_staging(base_model_name, candidate_model_name, evaluation_d
 
         _data_path = download_dataset(evaluation_dataset_name)
         _data = hkl.load(_data_path)
-        (candidate_model, candidate_model_version) = download_model(candidate_model_name, model_flavor, retries=6)
-        (base_model, base_model_version) = download_model(base_model_name, model_flavor, retries=6)
+        (candidate_model, candidate_model_version, _) = download_model(candidate_model_name, model_flavor, retries=6)
+        (base_model, base_model_version, _) = download_model(base_model_name, model_flavor, retries=6)
         test_data = _data.get('test_data')
         test_labels = _data.get('test_labels')
         preexisting_base_model_found = base_model is not None
