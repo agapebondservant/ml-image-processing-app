@@ -54,7 +54,7 @@ kubectl exec vault-0 -n vault -- vault kv put secret/postgres/default/inference 
 
 * Create ExternalSecrets which will be synced with the pipeline:
 ```
-kubectl apply -f config/cifar/pipeline_external_secrets.yaml -n argo
+kubectl apply -f config/cifar/external_secrets.yaml -n argo
 ```
 
 * cd to </root/of/branch/directory/with/appropriate/model/stage> 

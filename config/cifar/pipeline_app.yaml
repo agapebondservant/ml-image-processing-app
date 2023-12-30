@@ -17,6 +17,7 @@ spec:
           - config/cifar/job.yaml
           - config/cifar/pipeline.yaml
           - config/cifar/values.yaml
+          - config/cifar/external_secrets.yaml
           - .git/HEAD
 
   deploy:
