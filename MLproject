@@ -4,7 +4,7 @@ entry_points:
   upload_dataset:
     parameters:
         dataset-name: {default: "cifar10"}
-    command: '$(which python3.9) upload_dataset.py "{dataset-name}" >> /tmp/app.log 2>&1'
+    command: '$(which python3.9) upload_dataset.py "{dataset-name}" 2>&1 | tee -a /tmp/app.log; RC=( "${PIPESTATUS[@]}" ) && exit $([ "${RC[0]}" -eq "0" ])'
   train_model:
     parameters:
         dataset-name: {default: "cifar10"}
@@ -12,17 +12,17 @@ entry_points:
         model-flavor: {default: "tensorflow"}
         model-stage: {default: "None"}
         epochs: {type: float, default: 10}
-    command: '$(which python3.9) train_model.py "{dataset-name}" "{model-name}" "{model-flavor}" "{model-stage}" {epochs} >> /tmp/app.log 2>&1'
+    command: '$(which python3.9) train_model.py "{dataset-name}" "{model-name}" "{model-flavor}" "{model-stage}" {epochs} 2>&1 | tee -a /tmp/app.log; RC=( "${PIPESTATUS[@]}" ) && exit $([ "${RC[0]}" -eq "0" ])'
   evaluate_model:
     parameters:
         dataset-name: {default: "cifar10"}
         model-name: {default: "cifar_cnn_gpmain"}
         model-flavor: {default: "tensorflow"}
-    command: '$(which python3.9) evaluate_model.py "{model-name}" "{model-flavor}" >> /tmp/app.log 2>&1'
+    command: '$(which python3.9) evaluate_model.py "{model-name}" "{model-flavor}" 2>&1 | tee -a /tmp/app.log; RC=( "${PIPESTATUS[@]}" ) && exit $([ "${RC[0]}" -eq "0" ])'
   promote_model_to_staging:
     parameters:
         base_model-name: {default: "cifar_cnn"}
         candidate-model-name: {default: "cifar_cnn_gpmain"}
         dataset-name: {default: "cifar10"}
         model-flavor: {default: "tensorflow"}
-    command: '$(which python3.9) promote_model_to_staging.py "{base_model-name}" "{candidate-model-name}" "{dataset-name}" "{model-flavor}" >> /tmp/app.log 2>&1'
+    command: '$(which python3.9) promote_model_to_staging.py "{base_model-name}" "{candidate-model-name}" "{dataset-name}" "{model-flavor}" 2>&1 | tee -a /tmp/app.log; RC=( "${PIPESTATUS[@]}" ) && exit $([ "${RC[0]}" -eq "0" ])'

@@ -28,6 +28,15 @@ tanzu apps workload delete image-processor-gp-main --yes
 ### Set up the Training DB
 
 * Set up Greenplum on AWS: <a href="https://aws.amazon.com/blogs/apn/vmware-greenplum-on-aws-parallel-postgres-for-enterprise-analytics-at-scale/" target="_blank">link</a>
+* Upgrade git - ssh into the Greebplum master node and run the following:
+```
+unset PYTHONHOME
+unset PYTHONPATH
+sudo yum remove git
+sudo yum install git236 -y
+sudo yum groupinstall 'Development Tools' -y
+git config --global --add remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+```
 
 ### Set up the Inference DB
 * NOTE: If deploying the Postgres instance on GKE, first follow the pre-requisites for deploying VMware Postgres on Kubernetes: <a href="https://docs.vmware.com/en/VMware-SQL-with-Postgres-for-Kubernetes/1.5/vmware-postgres-k8s/GUID-prepare-gke.html" target="_blank">link</a>
@@ -49,6 +58,7 @@ source .env
 chmod 600 $DATA_E2E_GREENPLUM_PEM
 kubectl cp $DATA_E2E_GREENPLUM_PEM vault/vault-0:/tmp
 kubectl exec vault-0 -n vault -- vault kv put secret/greenplum/default/training pem=@/tmp/$DATA_E2E_GREENPLUM_PEM password=$DATA_E2E_GREENPLUM_PASSWORD
+kubectl exec vault-0 -n vault -- vault kv put secret/greenplum/demo/training pem=@/tmp/$DATA_E2E_GREENPLUM_PEM password=$DATA_E2E_GREENPLUM_DEMO_PASSWORD
 kubectl exec vault-0 -n vault -- vault kv put secret/postgres/default/inference password=$PGINFERENCE_DB_SECRET
 ```
 
