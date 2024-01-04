@@ -259,7 +259,7 @@ def promote_model_to_staging(base_model_name, candidate_model_name, evaluation_d
             size, num_classes = test_labels.shape[0], 10
             dummy_data = pd.DataFrame({'x': np.random.randint(0, num_classes, size),
                                        'y': test_labels.reshape(size, )})
-            base_model = DummyClassifier(strategy='constant', constant='no').fit(dummy_data['x'], dummy_data['y'])
+            base_model = DummyClassifier(strategy='constant', constant=0).fit(dummy_data['x'], dummy_data['y'])
 
         # Generate and Save Evaluation Metrics
         curr_data = _tensors_to_1d_prediction_and_target(test_data, test_labels, candidate_model)
