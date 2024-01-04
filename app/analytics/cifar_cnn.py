@@ -6,7 +6,6 @@ logging.getLogger().addHandler(logging.StreamHandler())
 logging.getLogger().addHandler(logging.FileHandler(f"app.log"))
 
 import warnings
-
 warnings.filterwarnings('ignore')
 import pandas as pd
 import numpy as np
@@ -198,8 +197,7 @@ def evaluate_model(model_name, model_flavor):
 
         if best_run_id is not None:
             (model, version, model_stage) = download_model(model_name, model_flavor, best_run_id=best_run_id)
-            logging.info(
-                f"Found best model for experiments {experiment_name}, model name {model_name} : {model}, stage={model_stage}")
+            logging.info(f"Found best model for experiments {experiment_name}, model name {model_name} : {model}, stage={model_stage}")
             if model_stage.lower() != 'production':
                 MlflowClient().transition_model_version_stage(
                     name=model_name,
@@ -228,7 +226,6 @@ def promote_model_to_staging(base_model_name, candidate_model_name, evaluation_d
         test_data = _data.get('test_data')
         test_labels = _data.get('test_labels')
         preexisting_base_model_found = base_model is not None
-        base_model_flavor = model_flavor
 
         if _can_use_dummy_model_as_base(preexisting_base_model_found, use_prior_version_as_base):
             logging.info(
@@ -238,7 +235,6 @@ def promote_model_to_staging(base_model_name, candidate_model_name, evaluation_d
             dummy_data = pd.DataFrame({'x': np.random.randint(0, num_classes, size),
                                        'y': test_labels.reshape(size, )})
             base_model = DummyClassifier(strategy='uniform').fit(dummy_data['x'], dummy_data['y'])
-            base_model_flavor = 'sklearn'
 
         # Generate and Save Evaluation Metrics
         curr_data = _tensors_to_1d_prediction_and_target(test_data, test_labels, candidate_model)
@@ -269,11 +265,9 @@ def promote_model_to_staging(base_model_name, candidate_model_name, evaluation_d
             promote_candidate_model = accuracy_results[0]['status'] == 'SUCCESS' or not preexisting_base_model_found
 
             # Promote the best model
-            selected_model_flavor = model_flavor if promote_candidate_model else base_model_flavor
-            getattr(mlflow, selected_model_flavor).log_model(
-                candidate_model if promote_candidate_model else base_model,
-                artifact_path=base_model_name,
-                registered_model_name=base_model_name)
+            getattr(mlflow, model_flavor).log_model(candidate_model if promote_candidate_model else base_model,
+                                                    artifact_path=base_model_name,
+                                                    registered_model_name=base_model_name)
 
             client.transition_model_version_stage(
                 name=base_model_name,
