@@ -17,7 +17,7 @@ spec:
           - config/cifar/pipeline.yaml
           - config/cifar/values.yaml
           - config/cifar/job.yaml
-          - .git/HEAD
+          - #@ ".git/refs/heads/{}".format(data.values.environment_name)
 
   deploy:
     - kapp: {}
