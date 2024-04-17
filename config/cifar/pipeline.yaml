@@ -4,7 +4,7 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: #@ "ml-image-processing-pipeline-kfpmain-{}".format(data.read("HEAD").strip())
+  name: #@ "ml-image-processing-pipeline-kfpmain-{}".format(data.read(data.values.environment_name).strip())
 spec:
   template:
     spec:
