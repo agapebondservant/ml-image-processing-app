@@ -47,4 +47,5 @@ download_and_extract
 altair==4.0
 jq
 shap
+pydantic==2.6.0
 .
