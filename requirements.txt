@@ -33,17 +33,18 @@ tensorflow
 rsocket
 # asyncio==3.4.3
 python-snappy
-mlflow==2.4.1
+mlflow==2.7.0
 filelock==3.9.0
 pyarrow<7.0.0
 hickle
 python-multipart
-evidently
+evidently==0.4.16
 pysqlite3-binary
-kfp==1.8.19
+kfp==2.5.0
 python-multipart
 pyservicebinding
 greenplum-python
 https://github.com/agapebondservant/ml-image-processing-app/zipball/gp-main
 download_and_extract
 altair==4.0
+pydantic==2.6.0
