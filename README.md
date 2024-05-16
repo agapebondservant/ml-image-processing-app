@@ -72,7 +72,7 @@ kubectl apply -f config/cifar/external_secrets.yaml -n argo
 
 * Deploy the pipeline:
 ```
-ytt -f config/cifar/pipeline_app.yaml -f config/cifar/values.yaml | kapp delete -a image-procesor-pipeline-<THE PIPELINE ENVIRONMENT> -y  -nargo -f -
+ytt -f config/cifar/pipeline_app.yaml -f config/cifar/values.yaml | kapp apply -a image-procesor-pipeline-<THE PIPELINE ENVIRONMENT> -y  -nargo -f -
 ```
 
 * View progress:
